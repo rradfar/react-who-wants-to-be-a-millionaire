@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Questions from './components/Questions';
 import './app.css';
 
 function App() {
@@ -27,7 +28,9 @@ function App() {
         <div className='top'>
           <div className='timer'>30</div>
         </div>
-        <div className='bottom'>Question and answers</div>
+        <div className='bottom'>
+          <Questions />
+        </div>
       </div>
       <div className='pyramid'>
         <ul className='moneyList'>
