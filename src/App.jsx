@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Questions from './components/Questions';
 import './app.css';
 
 function App() {
   const [questionNumber, setQuestionNumber] = useState(1);
   const [stop, setStop] = useState(false);
+  const [earned, setEarned] = useState('$ 0');
 
   const data = [
     {
@@ -53,14 +54,14 @@ function App() {
     },
     {
       id: 3,
-      question: 'Who played the character of harry potter in movie?',
+      question: 'Who played the character of Harry Potter in the movie?',
       answers: [
         {
-          text: 'Johnny Deep',
+          text: 'Johnny Depp',
           correct: false,
         },
         {
-          text: 'Leonardo Di Caprio',
+          text: 'Leonardo DiCaprio',
           correct: false,
         },
         {
@@ -68,7 +69,7 @@ function App() {
           correct: false,
         },
         {
-          text: 'Daniel Red Cliff',
+          text: 'Daniel Radcliffe',
           correct: true,
         },
       ],
@@ -92,20 +93,33 @@ function App() {
     { id: 14, amount: '$ 500,000' },
     { id: 15, amount: '$ 1,000,000' },
   ].reverse();
+
+  useEffect(() => {
+    // Show the previous question's amount unless user is on the first question
+    questionNumber > 1 &&
+      setEarned(moneyPyramid.find(m => m.id === questionNumber - 1).amount);
+  }, [moneyPyramid, questionNumber]);
+
   return (
     <div className='App'>
       <div className='main'>
-        <div className='top'>
-          <div className='timer'>30</div>
-        </div>
-        <div className='bottom'>
-          <Questions
-            data={data}
-            setStop={setStop}
-            questionNumber={questionNumber}
-            setQuestionNumber={setQuestionNumber}
-          />
-        </div>
+        {stop ? (
+          <h1 className='endText'>You earned: {earned}</h1>
+        ) : (
+          <>
+            <div className='top'>
+              <div className='timer'>30</div>
+            </div>
+            <div className='bottom'>
+              <Questions
+                data={data}
+                setStop={setStop}
+                questionNumber={questionNumber}
+                setQuestionNumber={setQuestionNumber}
+              />
+            </div>
+          </>
+        )}
       </div>
       <div className='pyramid'>
         <ul className='moneyList'>
